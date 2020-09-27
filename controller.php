@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+$GLOBALS['index'] = array('les 1', 'les 2', 'les 3', 'les 4', 'les 5', 'les 6', 'brelan', 'carré', 'full', 'petite suite', 'grande suite', 'yams', 'chance', 'total'
+);
+
     function initPlayers() {
 
         $_SESSION['player1'] = $_POST['player1'];
@@ -68,7 +71,6 @@ session_start();
         }
 
         verifyEndGame();
-        //initGame();
     }
 
 
@@ -79,7 +81,8 @@ session_start();
         else {
             $_GET['winner'] = $_SESSION['fiche1']['total'] > $_SESSION['fiche2']['total'] ? $_SESSION['player1'] : $_SESSION['player2'];
 
-            require('test.php');
+            $_GET['phase'] = 'end';
+            require('indexView.php');
         }
     }
 
@@ -106,8 +109,10 @@ session_start();
 //CALCULS DES POINTS SELON LES DES
     function displayPossibilities() {
         $_GET['tab_dices'] = validateDices();
+/*
         $_SESSION['index'] = array('les 1', 'les 2', 'les 3', 'les 4', 'les 5', 'les 6', 'brelan', 'carré', 'full', 'petite suite', 'grande suite', 'yams', 'chance', 'total'
     );
+*/
         //get[values] a la fin
 
         

@@ -8,7 +8,7 @@
         $str = '';
         for($i = 0; $i < $count ; $i++) {
 
-            $index = $_SESSION['index'][$i];
+            $index = $GLOBALS['index'][$i];
             $label_points = $fiche[$index] != null ? ' points' : ' _ '; 
     
             $str .= '<p><label for="' . $index . '" >' . $index . ' = ' . $fiche[$index] . $label_points . '</label>';

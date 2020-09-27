@@ -1,6 +1,6 @@
 <?php
 
-    $title = 'Acceuil';
+    $title = 'Accueil';
     ob_start();
 
 /*
@@ -102,12 +102,32 @@ phase test
 
 <?php
     }
+
     elseif($_GET['phase'] == 'start') {
         echo $_SESSION['current_player'];
 ?>
         <form action="index.php?action=play&phase=1" method="post">
             <input type="submit" value="Lancer les dés" />
         </form>
+<?php
+    }
+
+    elseif($_GET['phase'] == 'end') {
+        echo 'Fin du jeu';
+        echo '<br/>';
+    
+        echo $_GET['winner'] . ' à gagné !' . '<br/>';
+    
+        echo $_SESSION['player1'] . ' => ' . $_SESSION['fiche1']['total'];
+        echo '<br/>';
+    
+        echo $_SESSION['player2'] . ' => ' . $_SESSION['fiche2']['total'];
+        echo '<br/>';
+?>
+        <form action="indexView.php" method="post">
+            <input type="submit" value="Rejouer" />
+        </form>
+
 <?php
     }
 

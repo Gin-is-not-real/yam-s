@@ -16,16 +16,16 @@
 ?>
     <form action="index.php?action=putScore" method="post">
 <?php
-        $count = count($_SESSION['index']);
+        $count = count($GLOBALS['index']);
         //echo $count;
         for($i = 0; $i < $count -1; $i++){
 
-            $score = $_SESSION['current_fiche'][$_SESSION['index'][$i]] != 0 ? $_SESSION['current_fiche'][$_SESSION['index'][$i]] : $_GET['values'][$i];
+            $score = $_SESSION['current_fiche'][$GLOBALS['index'][$i]] != 0 ? $_SESSION['current_fiche'][$GLOBALS['index'][$i]] : $_GET['values'][$i];
 
-            echo '<p><label for="' . $_SESSION['index'][$i] . '" >' . $_SESSION['index'][$i] . ' = ' . $score . ' points</label>';
+            echo '<p><label for="' . $GLOBALS['index'][$i] . '" >' . $GLOBALS['index'][$i] . ' = ' . $score . ' points</label>';
 
-            if($_SESSION['current_fiche'][$_SESSION['index'][$i]] === null) {
-                echo '<input type="radio" id="' . $_SESSION['index'][$i] . '" name="radio" value="' . $_GET['values'][$i] .'" required /></p>'; 
+            if($_SESSION['current_fiche'][$GLOBALS['index'][$i]] === null) {
+                echo '<input type="radio" id="' . $GLOBALS['index'][$i] . '" name="radio" value="' . $_GET['values'][$i] .'" required /></p>'; 
             }
  
                       
