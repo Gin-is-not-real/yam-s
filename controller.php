@@ -3,6 +3,18 @@ session_start();
 
 $GLOBALS['index'] = array('les 1', 'les 2', 'les 3', 'les 4', 'les 5', 'les 6', 'brelan', 'carré', 'full', 'petite suite', 'grande suite', 'yams', 'chance', 'total'
 );
+/*
+$GLOBALS['max']
+array contenant maximum de points pour chaque score; 1*5, 2*5, 3*5, 4*5, 5*5, 6*5,
+brelan (a verifier) 3*6;
+carré (a verifier) 4*6;
+full (brelan + paire) 25 pnt;
+ptite suite 30 pnts,
+grnde suite 40 pnts,
+yam's 50 pnts,
+chance 5*6
+*/
+$GLOBALS['max'] = array(5, 10, 15, 20, 25, 30, 18, 24, 25, 30, 40, 50, 30);
 
     function initPlayers() {
 
@@ -15,6 +27,7 @@ $GLOBALS['index'] = array('les 1', 'les 2', 'les 3', 'les 4', 'les 5', 'les 6', 
         $_GET['phase'] = 'test';
         require('indexView.php');
     }
+    
     function initFiche() {
         $fiche = array(
             'les 1' => null,
@@ -58,6 +71,9 @@ $GLOBALS['index'] = array('les 1', 'les 2', 'les 3', 'les 4', 'les 5', 'les 6', 
         require('gameView.php');
     }
 
+/*
+Cette fonction permet de valider le score choisi par l'utilisateur et l'inscrire sur sa fiche
+*/
     function putScore() {
         $score = $_POST['radio'];
 
@@ -73,7 +89,9 @@ $GLOBALS['index'] = array('les 1', 'les 2', 'les 3', 'les 4', 'les 5', 'les 6', 
         verifyEndGame();
     }
 
-
+/*
+cette fonction verifie si toutes les lignes de scores ont étés remplies. Si c'est le cas c'est la fin de la partie
+*/
     function verifyEndGame() {
         if(in_array(null, $_SESSION['fiche1']) OR in_array(null, $_SESSION['fiche2']) ) {
             initGame();             
@@ -85,8 +103,11 @@ $GLOBALS['index'] = array('les 1', 'les 2', 'les 3', 'les 4', 'les 5', 'les 6', 
             require('indexView.php');
         }
     }
-
-//PROPOSITION POINTS    
+ 
+/*
+VALIDATION DES DES
+Cette fonction récupére les valeurs des dés (stock et board) dont dispose le joueur a la fin de ses lancés et les stocke dans $tab_dices
+*/
     function validateDices() {
         $tab_dices = array();
         $index_tab_dices = 0;
@@ -106,27 +127,60 @@ $GLOBALS['index'] = array('les 1', 'les 2', 'les 3', 'les 4', 'les 5', 'les 6', 
         return $tab_dices;
     }
 
-//CALCULS DES POINTS SELON LES DES
-    function displayPossibilities() {
-        $_GET['tab_dices'] = validateDices();
 /*
-        $_SESSION['index'] = array('les 1', 'les 2', 'les 3', 'les 4', 'les 5', 'les 6', 'brelan', 'carré', 'full', 'petite suite', 'grande suite', 'yams', 'chance', 'total'
-    );
+QUELS DES DIFFERENTS A OBTENU LE JOUEUR
+creation d'un array ne contenant qu'une occurence de chaque dés de tab dices
 */
-        //get[values] a la fin
+    function whatDices($tab_dices) {
+        $tab_numbers = array();
+        foreach($tab_dices as $nbr) {
+            if(!in_array($nbr, $tab_numbers)) {
+                $tab_numbers[] = $nbr;
+            }
+        }
+        return $tab_numbers;
+    }
 
-        
+/*
+COMBIEN D'EXEMPLAIRE DE CHAQUE DES
+*/
+    function whatOccurences($tab_dices, $tab_numbers) {
+        foreach($tab_numbers as $nbr) {
+            $occurence = 0;
+
+            foreach($tab_dices as $dice) {
+                if($nbr == $dice) {
+                    $occurence += 1;
+                }
+            }
+        $occurences[$nbr] = $occurence;            
+        }
+
+        return $occurences;
+    }
+
+//CALCULS DES POINTS SELON LES DES
+/*
+Pour chaque ligne de score, cette fonction calcule les points qu'il est possible de marquer et les stocke dans $points
+*/
+    function displayPossibilities() {
+
+        $_GET['tab_dices'] = validateDices();
+        $tab_numbers = whatDices($_GET['tab_dices']);
+        $occurences = whatOccurences($_GET['tab_dices'], $tab_numbers);
+   
         $points = array();
         $possibility;
-        $occurences = array();
-        $occurence;
 
-//pour les simples (les 1, les 2 etc..)
+        //get[values] a la fin equivault a $points mais avec des index numeriques
+
+//les simples (les 1, les 2 etc..)
+
         for($i = 1; $i < 7; $i++){
             $possibility = 0;
 
-            foreach($_GET['tab_dices'] as $value) {
-                if($value == $i) {
+            foreach($_GET['tab_dices'] as $dice_value) {
+                if($dice_value == $i) {
                     $possibility += $i;
                 }
             }
@@ -134,25 +188,6 @@ $GLOBALS['index'] = array('les 1', 'les 2', 'les 3', 'les 4', 'les 5', 'les 6', 
         }
 
 //les complexes
-        //creation d'un array ne contenant qu'une occurence de chaque dés de tab dices
-        $tab_numbers = array();
-        foreach($_GET['tab_dices'] as $nbr) {
-            if(!in_array($nbr, $tab_numbers)) {
-                $tab_numbers[] = $nbr;
-            }
-        }
-
-        //combien de fois tab_dices contient chaque nbr
-        foreach($tab_numbers as $nbr) {
-            $occurence = 0;
-
-            foreach($_GET['tab_dices'] as $dice) {
-                if($nbr == $dice) {
-                    $occurence += 1;
-                }
-            }
-        $occurences[$nbr] = $occurence;            
-        }
 
         //brelan
         if(in_array(3, $occurences)) {
@@ -221,12 +256,17 @@ $GLOBALS['index'] = array('les 1', 'les 2', 'les 3', 'les 4', 'les 5', 'les 6', 
         $points['yams'] = in_array(5, $occurences) ? 50 : 0;
 
         //chance
-        foreach($_GET['tab_dices'] as $value) {
-            $possibility += $value;
+        $possibility = 0;
+        foreach($_GET['tab_dices'] as $td_value) {
+            $possibility += $td_value;
             $points['chance'] = $possibility;
         }
 
         //get values[]
+        /*
+        $points stocke les points possibles avec le nom de la ligne de score comme index
+        $_GET['values'] stocke les valeurs de $points mais avec des index numériques, pour pouvoir être traités par des boucles
+        */
         $_GET['values'] = array();
         foreach($points as $value) {
             $_GET['values'][] = $value;

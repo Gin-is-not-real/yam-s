@@ -2,7 +2,6 @@
 
 <?php
 
-
     function generateFiche($fiche) {
         $count = count($_SESSION['current_fiche']);
         $str = '';

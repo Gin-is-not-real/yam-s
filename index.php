@@ -33,7 +33,6 @@ require('controller.php');
             require('indexView.php');
         }
 
-
     } catch(Exception $e) {
         echo 'Erreur: ' . $e->getMessage();
     }
