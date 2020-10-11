@@ -5,7 +5,14 @@ require('controller.php');
 
         if(isset($_GET['action'])) {
 
-            if($_GET['action'] == 'names') {
+            if($_GET['action'] == 'solo') {
+                chooseMode('solo');
+            }
+            elseif($_GET['action'] == 'vs') {
+                chooseMode('vs');
+            }
+
+            elseif($_GET['action'] == 'names') {
                 initPlayers();
             }
 
@@ -15,13 +22,21 @@ require('controller.php');
 
             elseif($_GET['action'] == 'play') {
 
-                if($_GET['phase'] == 4) {
-                    //$_GET['tab_dices'] = validateDices();
-                    displayPossibilities(); 
-                }
+                if($_SESSION['mode'] == 'solo' AND $_SESSION['current_player'] == $_SESSION['player2']) {
+                    turnIa($_GET['phase']);
+                }           
+
                 else {
-                    turn($_GET['phase']);
+                    if($_GET['phase'] == 4) {
+                        //$_GET['tab_dices'] = validateDices();
+                        displayPossibilities(); 
+                    }
+
+                    else {
+                        turn($_GET['phase']);
+                    }                    
                 }
+
                 
             }
             elseif($_GET['action'] == 'putScore') {

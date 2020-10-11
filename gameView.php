@@ -3,6 +3,7 @@
     ob_start();
 
     echo 'ici le game view';
+    echo '</br>Mode ' . $_SESSION['mode'];
     echo '<br/>current player: ' . $_SESSION['current_player'];
     echo '<br/>phase: ' . $_GET['phase'] . '<br/>';
 
@@ -24,22 +25,18 @@ phase=1
 
     }
 /*
-phase = 2
+phase = 2, 3
 */
     else {
 
         for($i = 1; $i < 6; $i++) {
-
             $stock[$i] = (isset($_POST['hidden' . $i])) ? $_POST['hidden' . $i] : null;  
-            
             $board[$i] = $stock[$i] == null ? rand(1, 6) : null;
         }
     }    
 
-
-
 /*
-all
+all phases
 */
 ?>
     <div><?= $_SESSION['current_player']; ?> garde:</div> 
@@ -51,7 +48,6 @@ all
         echo '<input type="' . $type .'" id="stock' . $i . '" value="' . $stock[$i] . '"/>';
         }
 ?>
-
 
     <form action="index.php?action=play&phase=<?=$_GET['phase'] +1; ?>" method="post">
 
@@ -67,7 +63,18 @@ all
             echo '<input type="hidden" id="hidden_board' . $i . '" name="hidden_board' . $i . '" value="' . $board[$i] . '" />';
         }
 ?>
-        <input type="submit" value=" <?= $_GET['phase'] == 3 ? 'Valider le score' : 'Relancer'; ?>" />
+<?php
+        if($_SESSION['mode'] == 'solo' AND $_SESSION['current_player'] == $_SESSION['player2']) {
+?>
+            <input type="submit" value=" <?= $_GET['phase'] == 3 ? 'Valider le score' : 'Action Bot'; ?>" />
+<?php
+        }
+        else {
+?>
+        <input type="submit" value=" <?= $_GET['phase'] == 3 ? 'Valider le score' : 'Relancer'; ?>" />  
+<?php          
+        }
+?>
     </form>
 
 <?php
@@ -118,8 +125,8 @@ all
         hidden_board.value = other.includes("dice") ? this.value : null;
 
         console.log(hidden.name + " " + hidden.value);
-
     }
+
 </script>
 <?php
     

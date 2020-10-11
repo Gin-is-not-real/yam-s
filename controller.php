@@ -15,19 +15,28 @@ yam's 50 pnts,
 chance 5*6
 */
 $GLOBALS['max'] = array(5, 10, 15, 20, 25, 30, 18, 24, 25, 30, 40, 50, 30);
+$GLOBALS['bot_name'] = 'Jeanne Droïd';
+
+    function chooseMode($mode) {
+        $_SESSION['mode'] = $mode;
+        $_GET['phase'] = 'names';
+        require('indexView.php');
+    }
 
     function initPlayers() {
-
         $_SESSION['player1'] = $_POST['player1'];
-        $_SESSION['player2'] = $_POST['player2'];
+        $_SESSION['player2'] = $_SESSION['mode'] == 'solo' ?
+        $GLOBALS['bot_name'] : 
+            $_POST['player2'];
 
         $_SESSION['fiche1'] = initFiche();
         $_SESSION['fiche2'] = initFiche();
-        
+            
         $_GET['phase'] = 'test';
-        require('indexView.php');
+        require('indexView.php');            
+
     }
-    
+
     function initFiche() {
         $fiche = array(
             'les 1' => null,
@@ -69,6 +78,13 @@ $GLOBALS['max'] = array(5, 10, 15, 20, 25, 30, 18, 24, 25, 30, 40, 50, 30);
         $_GET['current_player'] = $_SESSION['current_player'];
         $_GET['phase'] = $phase;
         require('gameView.php');
+    }
+
+    function turnIa($phase) {
+        $_GET['current_player'] = $_SESSION['current_player'];
+        $_GET['phase'] = $phase;
+
+        require('test.php');
     }
 
 /*
