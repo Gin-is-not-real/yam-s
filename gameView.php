@@ -27,7 +27,7 @@ phase = 2
     else {
         for($i = 1; $i < 6; $i++) {
 
-            $stock[$i] = (isset($_POST['hidden' . $i])) ? $_POST['hidden' . $i] : null;  
+            $stock[$i] = (isset($_POST['hidden_stock' . $i])) ? $_POST['hidden_stock' . $i] : null;  
             
             $board[$i] = $stock[$i] == null ? rand(1, 6) : null;
         }
@@ -39,7 +39,7 @@ all
 include('hub1.php');
 include('hub2.php');
 ?>
-<div id="board">
+<div id="gameBoard">
     <div>Cliquer sur un dé pour le deplacer</div>
     <div><?= $_SESSION['current_player']; ?> garde:</div> 
 
@@ -59,9 +59,9 @@ include('hub2.php');
         for($i = 1; $i < 6; $i++) {
             $type = $board[$i] == null ? 'hidden' : 'button';
 
-            echo '<input type="' . $type .'" id="dice_' . $i . '" value="' . $board[$i] . '"/>';
+            echo '<input type="' . $type .'" id="board' . $i . '" value="' . $board[$i] . '"/>';
 
-            echo '<input type="hidden" id="hidden' . $i . '" name="hidden' . $i . '" value="' . $stock[$i] . '" />';
+            echo '<input type="hidden" id="hidden_stock' . $i . '" name="hidden_stock' . $i . '" value="' . $stock[$i] . '" />';
 
             echo '<input type="hidden" id="hidden_board' . $i . '" name="hidden_board' . $i . '" value="' . $board[$i] . '" />';
         }
@@ -71,48 +71,8 @@ include('hub2.php');
 </div>
 
 
-<script type="text/javascript">
-    var dice1 = document.querySelector('#dice_1');
-    dice1.addEventListener('click', change);
-    var dice2 = document.querySelector('#dice_2');
-    dice2.addEventListener('click', change);
-    var dice3 = document.querySelector('#dice_3');
-    dice3.addEventListener('click', change);
-    var dice4 = document.querySelector('#dice_4');
-    dice4.addEventListener('click', change);
-    var dice5 = document.querySelector('#dice_5');
-    dice5.addEventListener('click', change);
+<script src="../yam's2/scriptGame.js">
 
-    var stock1 = document.querySelector('#stock1');
-    stock1.addEventListener('click', change);
-    var stock2 = document.querySelector('#stock2');
-    stock2.addEventListener('click', change);
-    var stock3 = document.querySelector('#stock3');
-    stock3.addEventListener('click', change);
-    var stock4 = document.querySelector('#stock4');
-    stock4.addEventListener('click', change);
-    var stock5 = document.querySelector('#stock5');
-    stock5.addEventListener('click', change);
-
-    function change() {
-        var id = (this.id).charAt(5);
-        this.type = "hidden";
-
-        var other = (this.id).includes("dice") ? "stock" + id : "dice_" + id;
-
-        other_dice = document.querySelector('#' + other);
-        other_dice.type = "button";
-        other_dice.value = this.value;
-
-        hidden = document.querySelector('#hidden' + id);
-        hidden.value = other.includes("stock") ? this.value : null;
-
-        hidden_board = document.querySelector('#hidden_board' + id);
-        hidden_board.value = other.includes("dice") ? this.value : null;
-
-        console.log(hidden.name + " " + hidden.value);
-
-    }
 </script>
 
 <?php

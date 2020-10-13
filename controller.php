@@ -119,8 +119,8 @@ Cette fonction récupére les valeurs des dés (stock et board) dont dispose le 
         $index_tab_dices = 0;
 
         for($i = 1; $i < 6; $i++) {
-            if($_POST['hidden' . $i] != null) {
-                $tab_dices[$index_tab_dices] = $_POST['hidden' . $i];  
+            if($_POST['hidden_stock' . $i] != null) {
+                $tab_dices[$index_tab_dices] = $_POST['hidden_stock' . $i];  
                 $index_tab_dices ++;              
             } 
         }

@@ -31,26 +31,12 @@
             }             
         }
 ?>
-        <input type="hidden" name="radio_id" id="hidden" value="" />
+        <input type="hidden" name="radio_id" id="hidden_radio" value="" />
         <br/>
-        <input type="submit" id="submit" value="Inscrire" />
+        <input type="submit" id="score_submit" value="Inscrire" />
     </form>
 
 <!-- JS -->
-    <script type="text/javascript">
-        var submit = document.querySelector("#submit");
-        submit.addEventListener("click", check);
-        
-        function check() {
-            var radios = document.getElementsByName('radio');
-            var hidden = document.querySelector('#hidden');
+    <script src="../yam's2/scriptScore.js">
 
-            var id;
-            for(var i = 0; i < radios.length; i++) {
-                if(radios[i].checked) {
-                    id = radios[i].id;
-                }
-            }
-            hidden.value = id;
-        }
     </script>
