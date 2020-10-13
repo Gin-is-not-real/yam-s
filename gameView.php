@@ -2,11 +2,9 @@
     $title = 'Game';
     ob_start();
 
-    echo 'ici le game view';
-    echo '<br/>current player: ' . $_SESSION['current_player'];
-    echo '<br/>phase: ' . $_GET['phase'] . '<br/>';
-
-
+    echo 'C\'est au tour de ' . $_SESSION['current_player'];
+    echo '<br/>' . '(lancé ' . $_GET['phase'] . '/3)' . '<br/>';
+    
 /*
 phase=1
 */
@@ -27,7 +25,6 @@ phase=1
 phase = 2
 */
     else {
-
         for($i = 1; $i < 6; $i++) {
 
             $stock[$i] = (isset($_POST['hidden' . $i])) ? $_POST['hidden' . $i] : null;  
@@ -36,12 +33,14 @@ phase = 2
         }
     }    
 
-
-
 /*
 all
 */
+include('hub1.php');
+include('hub2.php');
 ?>
+<div id="board">
+    <div>Cliquer sur un dé pour le deplacer</div>
     <div><?= $_SESSION['current_player']; ?> garde:</div> 
 
 <?php
@@ -69,14 +68,8 @@ all
 ?>
         <input type="submit" value=" <?= $_GET['phase'] == 3 ? 'Valider le score' : 'Relancer'; ?>" />
     </form>
+</div>
 
-<?php
-    include('hub.php');
-    /*
-    echo '<br/>' . 'current fiche' . '<br/>';
-    print_r($_SESSION['current_fiche']);
-    */
-?>
 
 <script type="text/javascript">
     var dice1 = document.querySelector('#dice_1');
@@ -121,7 +114,7 @@ all
 
     }
 </script>
+
 <?php
-    
 $content = ob_get_clean();
 require('template.php');

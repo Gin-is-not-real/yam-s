@@ -2,33 +2,33 @@
     $title = "Score";
     ob_start();
 
-    echo 'ici le score view <br/>';
-    echo 'joueur: ' . $_SESSION['current_player'] . '<br/>';
+    echo $_SESSION['current_player'] . ', choisissez un score à marquer;' . '<br/>';
 
+    echo '(Dés: ';
     $score = $_GET['tab_dices'];
     foreach($score as $value) {
-        echo $value . ', ';
-        
+        echo $value . ', ';   
     }
-    echo '<br/>';
+    echo ')' . '<br/>';
 
-
+    include('hub1.php');
+    include('hub2.php');
 ?>
     <form action="index.php?action=putScore" method="post">
 <?php
         $count = count($GLOBALS['index']);
         //echo $count;
         for($i = 0; $i < $count -1; $i++){
+            $index_i = $GLOBALS['index'][$i];
+            $help_max = ' (max ' . $GLOBALS['max'][$i] . ' pnts)';
 
-            $score = $_SESSION['current_fiche'][$GLOBALS['index'][$i]] != 0 ? $_SESSION['current_fiche'][$GLOBALS['index'][$i]] : $_GET['values'][$i];
+            $score = $_SESSION['current_fiche'][$index_i] != 0 ? $_SESSION['current_fiche'][$index_i] : $_GET['values'][$i];
 
-            echo '<p><label for="' . $GLOBALS['index'][$i] . '" >' . $GLOBALS['index'][$i] . ' = ' . $score . ' points</label>';
+            echo '<p><label for="' . $index_i . '" >' . $index_i . $help_max . ' = ' . $score . ' points</label>';
 
-            if($_SESSION['current_fiche'][$GLOBALS['index'][$i]] === null) {
-                echo '<input type="radio" id="' . $GLOBALS['index'][$i] . '" name="radio" value="' . $_GET['values'][$i] .'" required /></p>'; 
-            }
- 
-                      
+            if($_SESSION['current_fiche'][$index_i] === null) {
+                echo '<input type="radio" id="' . $index_i . '" name="radio" value="' . $_GET['values'][$i] .'" required /></p>'; 
+            }             
         }
 ?>
         <input type="hidden" name="radio_id" id="hidden" value="" />
@@ -54,22 +54,3 @@
             hidden.value = id;
         }
     </script>
-
-        
-
-<?php
-
-include('hub.php');
-/*
-    echo 'current_fiche' . '<br/>';
-    print_r($_SESSION['current_fiche']);
-
-    echo '<br/>' . 'numbers' . '<br/>';
-    print_r($tab_numbers);
-
-    echo '<br/>' . 'occurences' . '<br/>';
-    print_r($occurences);
-*/
-
-
-

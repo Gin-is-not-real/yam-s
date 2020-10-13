@@ -5,19 +5,27 @@ $GLOBALS['index'] = array('les 1', 'les 2', 'les 3', 'les 4', 'les 5', 'les 6', 
 );
 /*
 $GLOBALS['max']
-array contenant maximum de points pour chaque score; 1*5, 2*5, 3*5, 4*5, 5*5, 6*5,
-brelan (a verifier) 3*6;
-carré (a verifier) 4*6;
-full (brelan + paire) 25 pnt;
-ptite suite 30 pnts,
-grnde suite 40 pnts,
-yam's 50 pnts,
-chance 5*6
+array contenant le maximum de points pour chaque score
 */
 $GLOBALS['max'] = array(5, 10, 15, 20, 25, 30, 18, 24, 25, 30, 40, 50, 30);
 
-    function initPlayers() {
+$_SESSION['gen_fiche1'] = generateFiche($_SESSION['fiche1']);
+$_SESSION['gen_fiche2'] = generateFiche($_SESSION['fiche2']);
 
+    function generateFiche($fiche) {
+        $count = count($_SESSION['current_fiche']);
+        $str = '';
+        for($i = 0; $i < $count ; $i++) {
+
+            $index = $GLOBALS['index'][$i];
+            $label_points = $fiche[$index] != null ? ' points' : ' _ '; 
+
+            $str .= '<p><label for="' . $index . '" >' . $index . ' = ' . $fiche[$index] . $label_points . '</label>';
+        }
+            return $str;        
+    }
+
+    function initPlayers() {
         $_SESSION['player1'] = $_POST['player1'];
         $_SESSION['player2'] = $_POST['player2'];
 
@@ -43,21 +51,18 @@ $GLOBALS['max'] = array(5, 10, 15, 20, 25, 30, 18, 24, 25, 30, 40, 50, 30);
             'grande suite' => null,
             'yams' => null,
             'chance' => null,
-            'total' => 0
+            'total' => null
         );
         return $fiche;
     }
 
-
     function initGame() {
-
         if(isset($_POST['first_player'])) {
             $_SESSION['current_player'] = $_POST['first_player'];            
         }
         else {
             $_SESSION['current_player'] = $_SESSION['current_player'] == $_SESSION['player1'] ? $_SESSION['player2'] : $_SESSION['player1'];
         }
-
 
         $_SESSION['current_fiche'] = ($_SESSION['current_player'] == $_SESSION['player1']) ? $_SESSION['fiche1'] : $_SESSION['fiche2'];
 
@@ -68,6 +73,7 @@ $GLOBALS['max'] = array(5, 10, 15, 20, 25, 30, 18, 24, 25, 30, 40, 50, 30);
     function turn($phase) {
         $_GET['current_player'] = $_SESSION['current_player'];
         $_GET['phase'] = $phase;
+        
         require('gameView.php');
     }
 

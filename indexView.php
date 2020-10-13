@@ -27,7 +27,7 @@ no phase
 phase test
 */
     elseif($_GET['phase'] == 'test') {
-        echo 'ici la phase test <br/>';
+        echo 'Qui sera le premier joueur ?';
         ?>
 
         <form action="index.php?action=init" method="post"> 
@@ -116,13 +116,13 @@ phase test
         echo 'Fin du jeu';
         echo '<br/>';
     
-        echo $_GET['winner'] . ' à gagné !' . '<br/>';
+        echo $_GET['winner'] . ' à gagné !' . '<br/></br>';
     
-        echo $_SESSION['player1'] . ' => ' . $_SESSION['fiche1']['total'];
+        echo $_SESSION['player1'] . ' => ' . $_SESSION['fiche1']['total'] . ' points';
         echo '<br/>';
     
-        echo $_SESSION['player2'] . ' => ' . $_SESSION['fiche2']['total'];
-        echo '<br/>';
+        echo $_SESSION['player2'] . ' => ' . $_SESSION['fiche2']['total'] . ' points';
+        echo '<br/></br>';
 ?>
         <form action="indexView.php" method="post">
             <input type="submit" value="Rejouer" />
